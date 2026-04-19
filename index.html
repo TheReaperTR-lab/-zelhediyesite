@@ -1,0 +1,85 @@
+cat <<EOF > index.html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aşkım İçin ✨</title>
+    <style>
+        :root { --bg: #f0f0f0; --card: #ffffff; --text: #888; --accent: #bbb; }
+        .love-mode { --bg: #0b0b0b; --card: rgba(25, 25, 25, 0.9); --text: #fff; --accent: #ff4d6d; }
+
+        body { background-color: var(--bg); color: var(--text); font-family: 'Arial', sans-serif; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; transition: 1s all; }
+        
+        .content { z-index: 2; background: var(--card); padding: 30px; border-radius: 25px; border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent); width: 85%; max-width: 380px; text-align: center; }
+        
+        .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; margin-bottom: 15px; filter: grayscale(100%); transition: 1s; }
+        .love-mode .profile-img { filter: grayscale(0%); box-shadow: 0 0 20px #ff4d6d; }
+
+        .mode-switch { background: var(--accent); border: none; padding: 10px 20px; color: white; border-radius: 50px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+        
+        #message { font-style: italic; margin: 15px 0; min-height: 40px; }
+        .heart-bg { position: absolute; color: rgba(255, 77, 109, 0.6); font-size: 20px; animation: float 5s linear infinite; pointer-events: none; opacity: 0; }
+        .love-mode .heart-bg { opacity: 1; }
+        
+        @keyframes float { from { transform: translateY(100vh) rotate(0deg); } to { transform: translateY(-10vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="hearts-container"></div>
+    <div class="content">
+        <button class="mode-switch" onclick="toggleMode()">Dünyayı Aydınlat ✨</button>
+        <h1 id="title">Sensiz Dünya...</h1>
+        <img src="foto.jpg" class="profile-img">
+        <p id="message">Her yer gri, her şey eksik...</p>
+        
+        <div id="final-part" style="display:none;">
+            <p style="font-size: 1.2rem; font-weight: bold;">İyi ki varsın, beni affeder misin? ❤️</p>
+            <audio id="myAudio" loop><source src="muzik.mp3" type="audio/mpeg"></audio>
+        </div>
+    </div>
+
+    <script>
+        let isLoveMode = false;
+        function toggleMode() {
+            isLoveMode = !isLoveMode;
+            const body = document.body;
+            const title = document.getElementById('title');
+            const msg = document.getElementById('message');
+            const btn = document.querySelector('.mode-switch');
+            const audio = document.getElementById('myAudio');
+            const final = document.getElementById('final-part');
+
+            if(isLoveMode) {
+                body.classList.add('love-mode');
+                title.innerText = "Seninle Her Yer Işıl Işıl! 💖";
+                msg.innerText = "Sen gelince kalbim renkleniyor, dünya güzelleşiyor...";
+                btn.innerText = "Karanlığa Dönme ❌";
+                final.style.display = 'block';
+                audio.play();
+                startHearts();
+            } else {
+                body.classList.remove('love-mode');
+                title.innerText = "Sensiz Dünya...";
+                msg.innerText = "Her yer gri, her şey eksik...";
+                btn.innerText = "Dünyayı Aydınlat ✨";
+                final.style.display = 'none';
+                audio.pause();
+            }
+        }
+
+        function startHearts() {
+            setInterval(() => {
+                if(isLoveMode) {
+                    const h = document.createElement('div'); h.className = 'heart-bg'; h.innerHTML = '❤️';
+                    h.style.left = Math.random() * 100 + 'vw'; h.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.getElementById('hearts-container').appendChild(h);
+                    setTimeout(() => h.remove(), 5000);
+                }
+            }, 300);
+        }
+    </script>
+</body>
+</html>
+EOF
+
